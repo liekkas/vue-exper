@@ -5,6 +5,7 @@
       <Button shape="circle" type="ghost" size="small" 
               icon="close" @click="$emit('hide-panel')"></Button>
     </div>
+    <slot name="content"></slot>
   </div>
 </template>
 
@@ -30,7 +31,7 @@ export default {
       align-items: center;
       padding: 12px;
       // height: 50px;
-      border-bottom: 1px solid #ddd;
+      border-bottom: 1px solid @border-color-base;
     }
   }
 </style>

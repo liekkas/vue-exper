@@ -8,7 +8,7 @@
     <div class="header-menu">
       <div class="header-menu-item" 
            :class="{'header-menu-item-selected': activeMenu === item.name}"
-           v-for="item in appMenus" :key="item.name" 
+           v-for="item in appMenus" :key="item.name" @click="letsgo(item)"
            v-if="isAdmin || authMenus.indexOf(item.name) > -1">
         <Icon :type="item.icon"></Icon>
         {{ item.title }}
@@ -19,32 +19,52 @@
       <Poptip trigger="hover">
         <div class="dropdown-cell app-center">
           <img src="/static/profile.svg">&nbsp;
+            <span style="font-size: 15px;">{{personName}}&nbsp;</span>
           <Icon type="ios-arrow-down"></Icon>
         </div>
         <div class="poptip-content" slot="content">
           <div class="poptip-content-item" @click="logout">
-            <Icon type="log-out"></Icon>退出
+            <Icon type="log-out"></Icon>&nbsp;退出
           </div>
           <div class="poptip-content-item">
-            <Icon type="log-out"></Icon>退出2
+            <Icon type="log-out"></Icon>&nbsp;退出2
+          </div>
+        </div>
+      </Poptip>
+
+      <Poptip trigger="hover">
+        <div class="dropdown-cell app-center">
+          <span style="font-size: 15px;">工单&nbsp;</span>
+          <Icon type="ios-arrow-down"></Icon>
+        </div>
+        <div class="poptip-content" slot="content">
+          <div class="poptip-content-item">
+            <Icon type="log-out"></Icon>&nbsp;我的工单
+          </div>
+          <div class="poptip-content-item">
+            <Icon type="log-out"></Icon>&nbsp;提交工单
           </div>
         </div>
       </Poptip>
 
       
       <div class="header-toolbar app-center">
-        <div class="header-icon app-center" @click="$emit('show-panel', 'msg')">
+        <div class="header-icon app-center" 
+             :class="{'header-icon-selected': showType === 'msg'}"
+             @click="toggleSlidePanel('msg')">
           <Badge count="12">
             <Icon type="ios-bell" size="24"></Icon>
           </Badge>
         </div>
-        <div class="header-icon app-center" @click="$emit('show-panel', 'history')">
+        <div class="header-icon app-center" 
+             :class="{'header-icon-selected': showType === 'history'}"
+             @click="toggleSlidePanel('history')">
           <Icon type="android-time" size="22"></Icon>
         </div>
-        <div class="header-icon app-center" @click="$emit('show-panel', 'help')">
-          <!-- <Badge count="0"> -->
-            <Icon type="help-circled" size="22"></Icon>
-          <!-- </Badge> -->
+        <div class="header-icon app-center" 
+             :class="{'header-icon-selected': showType === 'help'}"
+             @click="toggleSlidePanel('help')">
+          <Icon type="help-circled" size="22"></Icon>
         </div>
         
       </div>
@@ -55,6 +75,7 @@
 
 <script>
 export default {
+  props: ['showType'],
   computed: {
     appMenus() {
       return this.$store.getters.appMenus
@@ -69,18 +90,26 @@ export default {
       return this.$store.getters.user ? this.$store.getters.user.personName : ''
     },
     activeMenu() {
-      return this.$route.name
+      console.log(this.$route.path.split('/')[1]);
+      return this.$route.path.split('/')[1]
     }
   },
   methods: {
     logout() {
       this.$store.dispatch('logout')
+    },
+    toggleSlidePanel(v) {
+      this.$emit('show-panel', v)
+    },
+    letsgo(v) {
+      console.log('v is', v);
+      this.$router.push({name: v.name})
     }
   },
 }
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
   @import '~@/styles/theme';
   .header-left {
     cursor: pointer;
@@ -106,6 +135,7 @@ export default {
     border-right: 1px solid #000; 
     display: flex;
     align-items: baseline;
+    user-select: none;
     &-item {
       margin: 0 12px;
       &:hover {
@@ -141,11 +171,21 @@ export default {
     // background-color: aquamarine; 
   }
 
+  .ivu-poptip-inner {
+    background-color: #000000;
+    position: absolute;
+    top: 0;
+  }
+
+  .ivu-poptip-arrow {
+    display: none;
+  }
+
   .poptip-content {
-    color: @text-color;
-    
+    color: #bbb;
+    font-weight: 600;
     &-item {
-      padding: 4px 0;
+      padding: 8px;
       &:hover {
         cursor: pointer;
         color: @primary-color;
@@ -159,6 +199,10 @@ export default {
     margin: 0 4px;
     &:hover {
       cursor: pointer;
+      background-color: fade(@primary-color,90%);
+      border-radius: 30px;
+    }
+    &-selected {
       background-color: @primary-color;
       border-radius: 30px;
     }
