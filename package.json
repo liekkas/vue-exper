@@ -10,6 +10,8 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "@antv/data-set": "^0.8.8",
+    "@antv/g2": "^3.0.11",
     "animejs": "^2.2.0",
     "axios": "^0.18.0",
     "iview": "^2.13.1",
