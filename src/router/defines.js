@@ -9,33 +9,47 @@ export const appRouter = {
       path: 'home',
       name: 'home',
       icon: 'home',
-      title: '首页',
+      label: '首页',
       component: () => import('../views/home'),
     },
     {
       path: 'alarm',
       name: 'alarm',
       icon: 'ios-bell',
-      title: '告警管理',
+      label: '告警管理',
+      redirect: '/alarm/alarmList',
+      component: () => import('../views/alarm'),
       children: [
         {
           path: 'alarmList',
-          title: '告警流水',
+          name: 'alarmList',
+          icon: 'ios-bell',
+          label: '告警流水',
           component: () => import('../views/alarm/AlarmList.vue')
-        }
-      ]
-    },
-    {
-      path: 'form',
-      name: 'form',
-      icon: 'ios-list',
-      title: '表单管理',
-      children: [
+        },
         {
-          path: 'alarmList',
-          title: '告警流水',
-          component: () => import('../views/alarm/AlarmList.vue')
-        }
+          path: 'alarmList2',
+          name: 'alarmList2',
+          icon: 'ios-bell',
+          label: '告警流水2',
+          component: () => import('../views/alarm/AlarmList.vue'),
+          children: [
+            {
+              path: 'alarmList3',
+              name: 'alarmList3',
+              icon: 'ios-bell',
+              label: '告警流水3',
+              component: () => import('../views/alarm/AlarmList.vue'),
+            },
+            {
+              path: 'alarmList4',
+              name: 'alarmList4',
+              icon: 'ios-bell',
+              label: '告警流水4',
+              component: () => import('../views/alarm/AlarmSetting.vue'),
+            }
+          ]
+        },
       ]
     },
   ]
@@ -46,25 +60,25 @@ export const commonRouters = [
   {
     path: '/login',
     name: 'login',
-    title: '登录',
+    label: '登录',
     component: () => import('../views/login')
   },
   {
     path: '/403',
     name: 'error-403',
-    title: '403权限不足',
+    label: '403权限不足',
     component: () => import('../views/error/403.vue')
   },
   {
     path: '/500',
     name: 'error-500',
-    title: '500-服务端错误',
+    label: '500-服务端错误',
     component: () => import('../views/error/500.vue')
   },
   {
     path: '/*',
     name: 'error-404',
-    title: '404-页面不存在',
+    label: '404-页面不存在',
     component: () => import('../views/error/404.vue')
   },
 ]

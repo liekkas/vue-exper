@@ -11,43 +11,33 @@
            v-for="item in appMenus" :key="item.name" @click="letsgo(item)"
            v-if="isAdmin || authMenus.indexOf(item.name) > -1">
         <Icon :type="item.icon"></Icon>
-        {{ item.title }}
+        {{ item.label }}
       </div>
     </div>
 
     <div class="header-right app-center">
-      <Poptip trigger="hover">
-        <div class="dropdown-cell app-center">
-          <img src="/static/profile.svg">&nbsp;
-            <span style="font-size: 15px;">{{personName}}&nbsp;</span>
-          <Icon type="ios-arrow-down"></Icon>
-        </div>
-        <div class="poptip-content" slot="content">
-          <div class="poptip-content-item" @click="logout">
-            <Icon type="log-out"></Icon>&nbsp;退出
-          </div>
-          <div class="poptip-content-item">
-            <Icon type="log-out"></Icon>&nbsp;退出2
-          </div>
-        </div>
-      </Poptip>
+       <Menu mode="horizontal" theme="dark" active-name="1" @on-select="onMenuChanged">
+          <Submenu name="3">
+              <template slot="title">
+                  <Avatar class="avatar">{{personName.split('')[0]}}</Avatar>&nbsp;&nbsp;
+              </template>
+              <MenuGroup title="使用">
+                  <MenuItem name="use">个人中心</MenuItem>
+              </MenuGroup>
+              <MenuGroup title="其它">
+                  <MenuItem name="logout">退出</MenuItem>
+              </MenuGroup>
+          </Submenu>
+          <Submenu name="4">
+              <template slot="title">
+                  <!-- <Icon type="stats-bars"></Icon> -->
+                  工单
+              </template>
+              <MenuItem name="myOrder">我的工单</MenuItem>
+              <MenuItem name="addOrder">提交工单</MenuItem>
+          </Submenu>
+      </Menu>
 
-      <Poptip trigger="hover">
-        <div class="dropdown-cell app-center">
-          <span style="font-size: 15px;">工单&nbsp;</span>
-          <Icon type="ios-arrow-down"></Icon>
-        </div>
-        <div class="poptip-content" slot="content">
-          <div class="poptip-content-item">
-            <Icon type="log-out"></Icon>&nbsp;我的工单
-          </div>
-          <div class="poptip-content-item">
-            <Icon type="log-out"></Icon>&nbsp;提交工单
-          </div>
-        </div>
-      </Poptip>
-
-      
       <div class="header-toolbar app-center">
         <div class="header-icon app-center" 
              :class="{'header-icon-selected': showType === 'msg'}"
@@ -90,7 +80,6 @@ export default {
       return this.$store.getters.user ? this.$store.getters.user.personName : ''
     },
     activeMenu() {
-      console.log(this.$route.path.split('/')[1]);
       return this.$route.path.split('/')[1]
     }
   },
@@ -102,9 +91,15 @@ export default {
       this.$emit('show-panel', v)
     },
     letsgo(v) {
-      console.log('v is', v);
       this.$router.push({name: v.name})
-    }
+    },
+    onMenuChanged(v) {
+      if(v === 'logout') {
+        this.$store.dispatch('logout')
+      } else {
+        this.$router.push('/'+v)
+      }
+    },
   },
 }
 </script>
@@ -171,26 +166,9 @@ export default {
     // background-color: aquamarine; 
   }
 
-  .ivu-poptip-inner {
-    background-color: #000000;
-    position: absolute;
-    top: 0;
-  }
-
-  .ivu-poptip-arrow {
-    display: none;
-  }
-
-  .poptip-content {
-    color: #bbb;
-    font-weight: 600;
-    &-item {
-      padding: 8px;
-      &:hover {
-        cursor: pointer;
-        color: @primary-color;
-      }
-    }
+  .avatar {
+    color: @primary-color;
+    background-color: #ddd;
   }
 
   .header-icon {

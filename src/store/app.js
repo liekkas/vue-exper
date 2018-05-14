@@ -17,6 +17,7 @@ const app = {
     version: '',
     beforeBigScreenPath: '',
     themeSwitch:true,
+    openSlideMenu: []
   },
   mutations: {
     SET_TOKEN: (state, payload) => state.token = payload,
@@ -29,7 +30,12 @@ const app = {
     SET_VERSION: (state, payload) => state.version = payload,
     SET_BEFORE_BIG_SCREEN_PATH: (state, payload) => state.beforeBigScreenPath = payload,
     SET_THEME: (state, payload) =>state.themeSwitch = payload,
-    SET_IS_ADMIN: (state, payload) =>state.isAdmin = payload
+    SET_IS_ADMIN: (state, payload) =>state.isAdmin = payload,
+    ADD_OPEN_SLIDE_MNEU: (state, payload) => {
+      if(state.openSlideMenu.indexOf(payload) == -1) {
+        state.openSlideMenu.push(payload)
+      }
+    }
   },
   actions: {
     fetchToken({ commit, dispatch }, payload){

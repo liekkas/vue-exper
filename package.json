@@ -10,6 +10,7 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "animejs": "^2.2.0",
     "axios": "^0.18.0",
     "iview": "^2.13.1",
     "js-cookie": "^2.2.0",

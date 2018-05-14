@@ -11,13 +11,16 @@ import './utils/http'
 import store from './store'
 import './styles/light/index.less'
 import iView from 'iview'
+import BTable from './components/table/BTable.vue'
 
 Vue.use(iView)
 Vue.use(VueI18n)
 Vue.use(VueAxios, axios)
 Vue.config.productionTip = false
+Vue.component('BTable', BTable)
 
 window._ = require('lodash')
+window.anime = require('animejs')
 
 const i18n = new VueI18n({
   locale: 'zh-CN',
@@ -31,16 +34,4 @@ new Vue({
   router,
   store,
   render: h => h(App),
-  beforeCreate() {
-    // if(store.getters.token) {
-    //   store.dispatch('fetchAccount')
-    // }
-    // console.log('store.getters.token is', store.getters.token);
-  },
-  mounted() {
-    console.log('app mounted');
-  },
-  created() {
-    console.log('app created');
-  }
 })

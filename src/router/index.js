@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import {routers, commonRouters, appRouter} from './router'
+import {routers, commonRouters, appRouter} from './defines'
 import iView from 'iview'
 import store from '../store'
 import Cookie from 'js-cookie'
@@ -29,7 +29,7 @@ router.beforeEach((to, from, next) => {
   const token = Cookie.get('app_token')
   const isAdmin = Cookie.get('app_isAdmin')
   const menus = Cookie.get('app_menus')
-  console.log('track router', to.name);
+  console.log('track router', to);
   if(whiteList.indexOf(to.path) > -1) {
     next()
   } else {
